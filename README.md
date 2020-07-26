@@ -21,11 +21,11 @@ it's ability to receive a charge, and those points should be excluded from the a
 ## Dataset 
 
 Data consists of time series of battery variables over roughly 4 months of 2017 with the following variables: 
-
+'''
 pW_EnergyRemaining  - energy left in battery [Wh]
 PW_FullPackEnergyAvailable - total energy capacity of battery [Wh]
 PW_AvailableChargePower - max power capacity that battery can charge at this time [W]
-
+'''
 Available charge power is expected to be 3300 W or greater except when it derates.
 State of energy (soe) battery is defined as energy remaining over full energy 
 (PW_EnergyRemaining / PW_FullPackEnergyAvailable), and is considered to be full when 
