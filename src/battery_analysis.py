@@ -60,19 +60,7 @@ def read_battery_file(input_file):
             field_read = row[2]
             if (field_read == ''):
                     next(csv_read_file)
-            else:                    
-                #check if this in in there already or not
-                #dt_epoch_energy_left
-                #if (int(row[1])/1000 in dt_epoch_energy_left):
-                #    print('error duplicated value1')
-                #    sys.exit()
-                #if (int(row[1])/1000 in dt_epoch_energy_full):
-                #   print('error duplicated value2')
-                #   sys.exit()
-                #if (int(row[1])/1000 in dt_epoch_charge_avail):
-                #    print('error duplicated value3')
-                #    sys.exit()
-                    
+            else:                                        
                 # accumulate data and timestamp into lists
                 if   field_read == 'PW_EnergyRemaining':
                     # may need to cast to int
@@ -113,7 +101,6 @@ def read_battery_file(input_file):
     df_energy_left = df_energy_left.loc[~df_energy_left.index.duplicated(keep=False)]
     df_energy_full = df_energy_full.loc[~df_energy_full.index.duplicated(keep=False)]
     df_charge_avail = df_charge_avail.loc[~df_charge_avail.index.duplicated(keep=False)]
-
     print('    records expected %s found %s %s %s ' %(n_records_expected, len(df_energy_left), len(df_energy_full), len(df_charge_avail)))
     print('    missing %5.2f percent of data ' %(100.0 - 100.0*min(len(df_energy_left), len(df_energy_full), len(df_charge_avail))/n_records_expected))
     
@@ -172,7 +159,7 @@ def calc_charge_power_availability(battery_df):
                    .merge(df4, left_index=True, right_index=True, how='outer')
     cp_all_df.index = pd.DatetimeIndex(cp_all_df.index).month
     del df0, df1, df2, df3, df4    
-    
+
     cp_all_df['cp_not_avail_soe_full'] = cp_all_df['cp_not_avail_soe_full'].fillna(0)
     cp_all_df['cp_not_avail_soe_not_full'] = cp_all_df['cp_not_avail_soe_not_full'].fillna(0)
     return cp_all_df
@@ -194,12 +181,15 @@ def analyze_batteries(n_files):
     elif n_files_found > n_files:
         input_files = input_files[0:n_files]        
     
-    n = 3
+    n = 0
     input_file = input_files[n]
     for n, input_file in enumerate(input_files):        
         print('  reading file %s of %s, %s' %(n, len(input_files), input_file))
+        # read data
         battery_df = read_battery_file(input_file)        
+        # compute data availability
         mo_df = compute_data_availability(battery_df)
+        # compute charge power availability
         cp_all_df = calc_charge_power_availability(battery_df)
 
         # compute monthly charge power availability w/o consideration of soe at all 

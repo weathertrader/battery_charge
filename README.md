@@ -29,7 +29,7 @@ PW_AvailableChargePower - max power capacity that battery can charge at this tim
 Available charge power is expected to be 3300 W or greater except when it derates.
 State of energy (soe) battery is defined as energy remaining over full energy 
 (PW_EnergyRemaining / PW_FullPackEnergyAvailable), and is considered to be full when 
-soe > 90% is 'starting to get full'
+soe > 90% is starting to get full.
 
 ## Results 
 
@@ -59,5 +59,5 @@ Python libraries such as Pandas, Numpy and Matplotlib
 This script can be run from the repository directory with the following command 
 
 ```
-src/run.sh
+./src/run.sh
 ```
